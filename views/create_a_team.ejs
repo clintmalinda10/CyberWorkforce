@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Create a team</title>
+    <script src="https://kit.fontawesome.com/884dceafcb.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#create').click(function(){
+               $('#create').hide(); 
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="topnav">
+        <a class="parent" href="/index"><i class="fas fa-users"></i> Teams</a>
+        <a href="/create_a_team" class="active"><i class="fas fa-plus"></i> Create a Team</a>
+        <a href="/edit_team"><i class="fas fa-users-slash"></i> Delete a Team</a>
+    </div>
+    <div class="head">
+        <h1 ><a id="header" href="/">CYBER SECURITY</a></h1>
+        <p id="enter">Welcome to the Skills gap analyser!</p>
+        <script>
+            document.write(Date());
+        </script>
+    </div><br><br><br>
+
+
+    <form action="/create_a_team" method="POST">
+        <label for="team_name" id="name">Team Name:</label>
+        <input type="text" id="team_name" name="team_name" placeholder="e.g White Hat Hackers" required><BR></BR><br>
+
+        <p id="parag">Team Requirements</p><br><br>
+
+        <label for="knowledge" id="name">Knowledge Goals</label><br><br>
+        <input class="slider" id="knowledge" type="range" name="knowledge" min="0" max="100" required/>
+        <p id="value"><span id="know1"></span>%</p>
+        <script>
+            var slider1 = document.getElementById("knowledge");
+            var output1 = document.getElementById("know1");
+            output1.innerHTML = slider1.value;
+            slider1.oninput = function() {
+                output1.innerHTML = this.value;
+            }
+        </script>
+
+        <label for="skill" id="name">Skill Goals</label><br><br>
+        <input class="slider" id="skill" type="range" name="skill" min="0" max="100" required/>
+        <p id="value"><span id="skill1"></span>%</p>
+        <script>
+            var slider2 = document.getElementById("skill");
+            var output2 = document.getElementById("skill1");
+            output2.innerHTML = slider2.value;
+            slider2.oninput = function() {
+                output2.innerHTML = this.value;
+            }
+        </script>
+
+        <label for="ability" id="name">Ability Goal</label><br><br>
+        <input class="slider" id="ability" type="range" name="ability" min="0" max="100" required/>
+        <p id="value"><span id="ability1"></span>%</p>
+        <script>
+            var slider3 = document.getElementById("ability");
+            var output3 = document.getElementById("ability1");
+            output3.innerHTML = slider3.value;
+            slider3.oninput = function() {
+                output3.innerHTML = this.value;
+            }
+        </script>
+
+        <button id = "create" class="button" type="submit"><i class="fas fa-plus"></i> Create Team</button><br><br>
+    </form>
+    <p id="created"></p>
+</body>
+</html>

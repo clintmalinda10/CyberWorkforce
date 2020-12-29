@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Assessment Sign up page</title>
+    <script src="https://kit.fontawesome.com/884dceafcb.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <div class="topnav">
+    <a class="parent" href="/home"><i class="fas fa-pen"></i> Assessments</a>
+    <a href="/home" class = "active"><i class="fas fa-user"></i> Individual Assessment</a>
+    <a href="/team_assessment"><i class="fas fa-users-cog"></i> Team Assessment</a>
+  </div>
+<div class="head">
+    <h1 class="head1"><a href="/">CYBER SECURITY</a></h1>
+    <p class="welcome">Welcome to the Skills gap analyser!</p>
+    <script>
+        document.write(Date());
+    </script>
+</div><br><br><br>
+
+<p id="Description">Fill in below to start the assessment.</p><br><br>
+  
+<div id="forms">
+  <form action="/sign_up" action="qualifications" method="POST">
+
+  <div>
+    <label id="name" for="name">Name:</label>
+    <input name="name" type="text" placeholder="First Name" required>
+  </div><br>
+
+  <div>
+    <label id="surname" for="surname">Surname:</label>
+    <input name="surname" type="text" placeholder="Surname" required>
+  </div><br>
+
+  <div>
+    <label id="work">Work Role: </label>
+    <select name="role" id="dropbtn" required>
+        <option >Select your Work Role</option>
+        <% for (const i in model) { %>
+            <option value="<%= model[i].Job_Name %>"> <%= model[i].Job_Name %> </option>
+        <% } %>
+    </select>
+  </div><br>
+
+  <div>
+    <label id="work">Select Team</label>
+    <select name="team_chosen" id="dropbtn" >
+        <option >None</option>
+        <% for (const i in model1) { %>
+            <option value="<%= model1[i].Team_Name %>"> <%= model1[i].Team_Name %> </option>
+        <% } %>
+    </select>
+  </div><br>
+
+  <div>
+   
+  <button class="button" type="submit"><i class="fas fa-user-graduate"></i> Qualifications</button>
+  
+</form>
+
+</div>
+<br><br><br><br>    
+<footer id="foot">
+    <p>Clint Malinda</p>
+</footer>
+
+</body>
+</html>

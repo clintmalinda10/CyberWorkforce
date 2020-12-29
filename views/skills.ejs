@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/884dceafcb.js" crossorigin="anonymous"></script>
+        <title>Skills Assessment</title>
+    </head>
+
+
+<body>
+
+    <div class="topnav">
+        <p class="progress"><i class="fas fa-tasks"></i> Progress</p>
+        <p><i class="fas fa-check-double"></i> Knowledge</p>
+        <p class="active">Skill</p>
+        <p>Abilty</p>
+        <p><i class="fas fa-poll"></i> Results</p>
+    </div>
+    <div class="head">
+        <h1 ><a id="header" href="/">CYBERSECURITY</a></h1>
+        <p id="enter">Skill Assessment</p>
+    </div><br><br>
+
+<p>1. <%= model[0].Question %> </p>
+<form method="POST" action="/skills">
+    <input class="slider1" id="skill1" type="range" name="skill1" min="0" max="10" value="0" />
+    <p>Value: <span id="score1"></span></p>
+    <script>
+        var slider1 = document.getElementById("skill1");
+        var output1 = document.getElementById("score1");
+        output1.innerHTML = slider1.value;
+        slider1.oninput = function() {
+            output1.innerHTML = this.value;
+        }
+    </script>
+
+<p>2. <%= model[1].Question %> </p>
+<input class="slider2" id="skill2" type="range" name="skill2" min="0" max="10" value="0" />
+    <p>Value: <span id="score2"></span></p>
+    <script>
+        var slider2 = document.getElementById("skill2");
+        var output2 = document.getElementById("score2");
+        output2.innerHTML = slider2.value;
+        slider2.oninput = function() {
+            output2.innerHTML = this.value;
+        }
+    </script>
+
+<p>3. <%= model[2].Question %> </p>
+<input class="slider" id="skill3" type="range" name="skill3" min="0" max="10" value="0" />
+    <p>Value: <span id="score3"></span></p>
+    <script>
+        var slider3 = document.getElementById("skill3");
+        var output3 = document.getElementById("score3");
+        output3.innerHTML = slider3.value;
+        slider3.oninput = function() {
+            output3.innerHTML = this.value;
+        }
+    </script>
+
+<p>4. <%= model[3].Question %> </p>
+<input class="slider" id="skill4" type="range" name="skill4" min="0" max="10" value="0" />
+    <p>Value: <span id="score4"></span></p>
+    <script>
+        var slider4 = document.getElementById("skill4");
+        var output4 = document.getElementById("score4");
+        output4.innerHTML = slider4.value;
+        slider4.oninput = function() {
+            output4.innerHTML = this.value;
+        }
+    </script>
+
+<p>5. <%= model[4].Question %> </p>
+<input class="slider" id="skill5" type="range" name="skill5" min="0" max="10" value="0" />
+    <p>Value: <span id="score5"></span></p>
+    <script>
+        var slider5 = document.getElementById("skill5");
+        var output5 = document.getElementById("score5");
+        output5.innerHTML = slider5.value;
+        slider5.oninput = function() {
+            output5.innerHTML = this.value;
+        }
+    </script>
+
+<input type="submit" id= "taskbutton" value="Next" />
+
+</form>
+
+</body>
+</html>

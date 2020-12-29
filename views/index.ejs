@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Index</title>
+    <script src="https://kit.fontawesome.com/884dceafcb.js" crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+
+    <div class="topnav">
+        <a class="parent" href="/"><i class="fas fa-home"></i> Home</a>
+        <a href="/home"><i class="fas fa-pen"></i> Assessments</a>
+        <a class = "active" href="/index"><i class="fas fa-users"></i> Teams</a>
+    </div>
+    <div class="head">
+        <h1 ><a id="header" href="/">CYBER SECURITY</a></h1>
+        <p id="enter">Welcome to the Skills gap analyser!</p>
+        <script>
+            document.write(Date());
+        </script>
+    </div><br><br><br>
+
+    <div>
+        <form method="GET" action="/create_a_team">
+            <button class="button" type="submit"><i class="fas fa-plus"></i> Add a Team ?</button>
+        </form><br>
+
+        <form method="GET" action="/edit_team">
+            <button class="button" type="submit"><i class="fas fa-users-slash"></i> Delete a Team</button>
+        </form><br>
+
+        <form method="GET" action="/home">
+            <button class="button" type="submit">Already in a team ?</button>
+        </form>
+    </div>
+</body>
+</html>

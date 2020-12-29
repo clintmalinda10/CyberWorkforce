@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Delete</title>
+    <script src="https://kit.fontawesome.com/884dceafcb.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div class="topnav">
+        <a class="parent" href="/index"><i class="fas fa-users"></i> Teams</a>
+        <a href="/create_a_team" ><i class="fas fa-plus"></i> Create a Team</a>
+        <a class="active" href="/edit_team"><i class="fas fa-users-slash"></i> Delete a Team</a>
+    </div>
+    <div class="head">
+        <h1 ><a id="header" href="/">CYBERSECURITY</a></h1>
+        <p id="enter">Delete Team</p>
+        <script>
+            document.write(Date());
+        </script>
+    </div><br><br>
+
+<div>
+    <form action="/edit_team" method="POST">
+        <label id="work">Team:</label>
+        <select name="team_delete" id="dropbtn" required>
+            <option >Select Team to delete</option>
+            <% for (const i in model) { %>
+                <option value="<%= model[i].Team_Name %>"> <%= model[i].Team_Name %> </option>
+            <% } %>
+        </select><br><br>
+        <button class="button" id="delete_btn" type="submit" ><i class="fas fa-trash-alt"></i> Delete Team</button><br><br>
+    </form>
+
+    <a href="/"><button class="button" ><i class="fas fa-users"></i> Back to Teams </button></a>
+    <p id="deleted"></p>
+</div>
+
+</body>
+</html>

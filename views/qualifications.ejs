@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Qualifications</title>
+</head>
+
+
+<body>
+
+    
+    <div class="head">
+        <h1 ><a id="header" href="/">CYBER SECURITY</a></h1>
+        <p id="enter">Welcome to the Skills gap analyser!</p>
+        <script>
+            document.write(Date());
+        </script>
+    </div><br><br><br>
+
+
+    <div>
+
+        <p id="parag">Qualifications:</p>
+  </div><br>
+<form action="/qualifications" method="POST">
+    <div>
+        <label id="name" for="q1">Qualification 1:</label>
+        <select name="q1" id="dropbtn" >
+        <option >None</option>
+        <% for (const i in model2) { %>
+            <option value="<%= model2[i].Degree_Name %>"> <%= model2[i].Degree_Name %> </option>
+        <% } %>
+    </select>
+    </div><br>
+
+    <div>
+        <label id="name" for="q2">Qualification 2:</label>
+        <select name="q2" id="dropbtn" >
+        <option >None</option>
+        <% for (const i in model2) { %>
+            <option value="<%= model2[i].Degree_Name %>"> <%= model2[i].Degree_Name %> </option>
+        <% } %>
+    </select>
+    </div><br>
+    
+    <div>
+        <label id="name" for="c1">Certification1:</label>
+        <input type="text" name="c1" placeholder="CISM">
+    </div><br>
+    <div>
+        <label id="name" for="c2">Certification 2:</label>
+        <input type="text" name="c2" placeholder="CISA">
+    </div><br><br>
+
+
+    <button class="button">Start Assessment</button>
+</form>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

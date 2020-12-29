@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Team Analysis</title>
+    <script src="https://kit.fontawesome.com/884dceafcb.js" crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+    <div class="topnav">
+        <a class="parent" href="/home"><i class="fas fa-users"></i> Assessments</a>
+        <a href="/sign_up" ><i class="fas fa-user"></i> Individual Assessment</a>
+        <a class = "active" href="/team_assessment"><i class="fas fa-users-cog"></i> Team Assessment</a>
+    </div>
+    <div class="head">
+        <h1 class="head1"><a href="/">CYBER SECURITY</a></h1>
+        <p class="welcome">Welcome to the Skills gap analyser!</p>
+        <script>
+            document.write(Date());
+        </script>
+    </div><br><br>
+
+    <p id="Description">Select the team you want to assess.</p><br><br>
+
+    <form action="/team_assessment" method="POST">
+    <div>
+        <label id="work">Team:</label>
+        <select name="team_chosen" id="dropbtn" required>
+            <option >Select your Team</option>
+            <% for (const i in model1) { %>
+                <option value="<%= model1[i].Team_Name %>"> <%= model1[i].Team_Name %> </option>
+            <% } %>
+        </select><br><br>
+      
+        <button class="button" type="submit">Select Team <i class="fas fa-arrow-right"></i></button>
+
+        </div>
+      </form>
+</body>
+
+</html>
