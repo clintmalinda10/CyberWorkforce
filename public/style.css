@@ -261,3 +261,15 @@ a {
 .topnav .progress {
   color: red;
 }
+
+.reg_report {
+  list-style-type: circle;
+  background: lightseagreen;
+}
+
+.reg_report .reg_name {
+  text-align: left;
+  font-size: small;
+  font-family: 'Franklin Gothic Medium';
+
+}

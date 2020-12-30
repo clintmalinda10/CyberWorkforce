@@ -58,6 +58,7 @@ var team_assess;
 var ability_rows;
 var skill_rows;
 var know_rows;
+var reg_name;
 
 app.get('/', (req, res) => {
   res.render("dash.ejs");
@@ -318,6 +319,7 @@ app.get('/ability', (req, res) => {
       return console.error(err.message);
     }
     ability_rows = rows;
+    //console.log(rows);
     res.render("ability.ejs", { model: rows });
   });
 });
@@ -351,7 +353,7 @@ function getArraySum(a){
 
 app.get('/saving_data', (req, res) => {
 
-  console.log(ability_rows[0].Reg_ID);
+  //console.log(ability_rows[0].Reg_ID);
 
   for (ob in skill){
     skill_array.push(Number(skill[ob.toString()]));
@@ -384,7 +386,7 @@ db.run(`INSERT INTO Answers(Name, K_score, S_score, A_score, Date) VALUES(?, ?, 
   if (err) {
     return console.log(err.message);
   }else{
-    console.log("Insert successful!");
+    //console.log("Insert successful!");
   }
 
 });
@@ -487,7 +489,7 @@ function FinalResults(KT, ST, AT, KR, SR, AR){
                                         }
   
 
-  console.log("Reg Score:");
+  /*console.log("Reg Score:");
   for (let index = 0; index < reg_score.length; index++) {
     console.log(reg_score[index]);
     
@@ -496,7 +498,7 @@ function FinalResults(KT, ST, AT, KR, SR, AR){
   for (let index = 0; index < tracker.length; index++) {
     console.log(tracker[index]);
     
-  }
+  }*/
 
   return [tracker, reg_score];
 }
@@ -506,13 +508,14 @@ app.get('/results', (req, res) => {
   skill_reg = GetReg(skill_rows);
   know_reg = GetReg(know_rows);
   ability_reg = GetReg(ability_rows);
+  reg_name = [];
 
-  console.log('Skill reg list:')
+  /*console.log('Skill reg list:')
   for (let index = 0; index < skill_array.length; index++) {
     console.log(skill_array[index]);
     
   }
-  /*console.log("Skill----------------------------------------------------------");
+  console.log("Skill----------------------------------------------------------");
   let skill_total = Score(skill_reg, skill_array);
   console.log("Knowledge------------------------------------------------------");
   let know_total = Score(know_reg, know_array);
@@ -529,12 +532,32 @@ app.get('/results', (req, res) => {
   let AT = A[0];
   let AR = A[1];
   let overall = FinalResults(KT, ST, AT, KR, SR, AR);
-  for (let index = 0; index < FinalResults[1].length; index++) {
-    console(FinalResults[1][index]);
-    
-  }
+  let track = overall[0];
+  let reg_score_final = overall[1];
+  const sql = "SELECT Reg_ID, Reg_Domain FROM Score_Reg";
+  db.all(sql,[],(err,rows) => {
+    if(err){
+      return console.log(err.message);
+    }
 
-  res.render('results.ejs');
+    for (let index = 0; index < track.length; index++) {
+      for (let j = 0; j < rows.length; j++) {
+        if (rows[j].Reg_ID == track[index]) {
+          console.log(track[index]);
+          console.log(rows[j].Reg_Domain);
+          reg_name.push(String(rows[j].Reg_Domain));
+        }
+        
+      }
+      
+    }
+
+    res.render('results.ejs', {model:reg_name, model1:reg_score_final});
+  });
+  //console.log("Reg names: -------------------------------------------------------------------\n",reg_name);
+  
+
+  
 });
 
 //Team

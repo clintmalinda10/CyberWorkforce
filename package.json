@@ -2,9 +2,9 @@
   "name": "NICE",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "Start": "nodemon server.js",
+    "Start": "nodemon -e ejs,js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
