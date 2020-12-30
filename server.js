@@ -503,6 +503,44 @@ function FinalResults(KT, ST, AT, KR, SR, AR){
   return [tracker, reg_score];
 }
 
+function Certifications(score, tracker_id){
+  let certs = [];
+  if (score <= 40) {
+    let sql = "SELECT cert FROM Certifications WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND Level_ID = 1 AND Reg_ID = "+"'" +tracker_id+ "'";
+    db.all(sql,[], (err, rows) => {
+      if (err) {
+        return console.log(err.message);
+      }else{
+        return rows;
+      }
+      
+    });
+  }
+  else if (score >= 41 && score < 89) {
+    let sql = "SELECT cert FROM Certifications WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND Level_ID = 2 AND Reg_ID = "+"'" +tracker_id+ "'";
+    db.all(sql,[], (err, rows) => {
+      if (err) {
+        return console.log(err.message);
+      }else{
+        return rows;
+      }
+      
+    });
+
+  }else{
+    let sql = "SELECT cert FROM Certifications WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND Level_ID = 3 AND Reg_ID = "+"'" +tracker_id+ "'";
+    db.all(sql,[], (err, rows) => {
+      if (err) {
+        return console.log(err.message);
+      }else{
+        return rows;
+      }
+      
+    });
+
+  }
+}
+
 app.get('/results', (req, res) => {
 
   skill_reg = GetReg(skill_rows);
@@ -551,6 +589,7 @@ app.get('/results', (req, res) => {
       }
       
     }
+    
 
     res.render('results.ejs', {model:reg_name, model1:reg_score_final});
   });
