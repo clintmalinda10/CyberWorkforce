@@ -29,5 +29,16 @@
         </li>
         <% } %>
 </ul>
+
+<h1>KSA Score</h1>
+<ol>
+<% for(let j = 0; j < model2.length; j++) { %>
+    <li class="reg_report">
+        <p class="reg_name"><%=model3[j]%> <%=model2[j]%>%</p>
+    </li>
+    <% } %>
+
+</ol><br>
+<a href="/certification_and_credentials_results"><button class="button">Certs</button></a>
 </body>
 </html>

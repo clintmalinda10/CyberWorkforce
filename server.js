@@ -24,6 +24,7 @@ app.set('view engine', 'pug');
 //End of Views
 const cons = require('consolidate');
 const { request } = require('http');
+const { createECDH } = require('crypto');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Database
@@ -61,6 +62,14 @@ var know_rows;
 var reg_name;
 
 app.get('/', (req, res) => {
+  know = [];
+  skill = [];
+  ability = [];
+  degree1 = "";
+  degree2 = "";
+  cert1 = "";
+  cert2 = "";
+  team_select = [];
   res.render("dash.ejs");
 });
 
@@ -341,7 +350,8 @@ let skill_sum = 0;
 var know_score = 0;
 var abi_score = 0;
 var skill_score = 0;
-
+var ksa_score;
+const ksa_pointers = ["Knowledge", "Skills", "Ability"];
 //SUM
 function getArraySum(a){
   var total=0;
@@ -358,21 +368,26 @@ app.get('/saving_data', (req, res) => {
   for (ob in skill){
     skill_array.push(Number(skill[ob.toString()]));
   }
+  //console.log(skill_array);
   for(ob in ability){
     abi_array.push(Number(ability[ob.toString()]));
   }
+  //console.log(abi_array);
   var know_q_no = 0;
   for(ob in know){
     know_q_no = know_q_no + 1;
     know_array.push(Number(know[ob.toString()]));
   }
+  //console.log(know_array);
 
 
   let know_sum = getArraySum(know_array);
   let abi_sum = getArraySum(abi_array);
   let skill_sum = getArraySum(skill_array);
   // Score Json
-
+ability = 0;
+know = 0;
+skill = 0;
 know_score1 = Number((know_sum)/(know_array.length * 10)*100);
 abi_score1 = Number((abi_sum)/(abi_array.length * 10)*100);
 skill_score1 = Number((skill_sum)/(skill_array.length * 10)*100);
@@ -381,6 +396,8 @@ skill_score1 = Number((skill_sum)/(skill_array.length * 10)*100);
 know_score = know_score1.toPrecision(2);
 abi_score = abi_score1.toPrecision(2);
 skill_score = skill_score1.toPrecision(2);
+
+ksa_score = [know_score, skill_score, abi_score];
 
 db.run(`INSERT INTO Answers(Name, K_score, S_score, A_score, Date) VALUES(?, ?, ?, ?, datetime("now","localtime"))`, [name+" "+surname, know_score, skill_score, abi_score], function(err) {
   if (err) {
@@ -435,8 +452,10 @@ function Score(reg, ksa){
         
       }*/
       //console.log("Sum of array",getArraySum(reg_avg));
+      console.log(reg[i]);
+      console.log(reg_avg);
       reg_avg = Number(((getArraySum(reg_avg))/(reg_avg.length)*10));
-      //console.log("Sum Average: ",reg_avg);
+      console.log("Sum Average: ",reg_avg);
       reg_score.push(Number(reg_avg.toPrecision(2)));
         }
                                         }
@@ -465,8 +484,10 @@ function FinalResults(KT, ST, AT, KR, SR, AR){
   var reg_score = [];
   var reg_avg = [];
   var tracker = [];
+  var num;
   for (let i = 0; i < Tracker_master.length; i++) {
     reg_avg = [];
+    num = 1;
     reg_avg.push(Avg[i]);
     for (let j = i+1; j < Tracker_master.length; j++) {
         if (Tracker_master[i] == Tracker_master[j]) {
@@ -483,7 +504,7 @@ function FinalResults(KT, ST, AT, KR, SR, AR){
       }*/
       //console.log("Sum of array",getArraySum(reg_avg));
       reg_avg = Number(((getArraySum(reg_avg))/(reg_avg.length)));
-      //console.log("Sum Average: ",reg_avg);
+      //console.log("Sum Average: ",reg_avg.length);
       reg_score.push(Number(reg_avg.toPrecision(2)));
         }
                                         }
@@ -503,43 +524,49 @@ function FinalResults(KT, ST, AT, KR, SR, AR){
   return [tracker, reg_score];
 }
 
-function Certifications(score, tracker_id){
-  let certs = [];
-  if (score <= 40) {
-    let sql = "SELECT cert FROM Certifications WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND Level_ID = 1 AND Reg_ID = "+"'" +tracker_id+ "'";
-    db.all(sql,[], (err, rows) => {
-      if (err) {
-        return console.log(err.message);
-      }else{
-        return rows;
-      }
-      
-    });
-  }
-  else if (score >= 41 && score < 89) {
-    let sql = "SELECT cert FROM Certifications WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND Level_ID = 2 AND Reg_ID = "+"'" +tracker_id+ "'";
-    db.all(sql,[], (err, rows) => {
-      if (err) {
-        return console.log(err.message);
-      }else{
-        return rows;
-      }
-      
-    });
+var certs_output = [];
+var degrees;
 
+function cb(rows){
+  certs_output.push[rows];
+}
+
+function Degree(d1, d2, cb){
+  if((d1 || d2) !== "None"){
+    if(d1 != "None"){
+      const sql = "SELECT Degree_Name FROM Job_Id WHERE Job_Id = SELECT Job_Id FROM Jobs WHERE Job_Name = "+String(job);
+      db.all(sql, [], (err, rows) => {
+        for (let index = 0; index < rows.length; index++) {
+          if(d1 == rows[index].Degree_Name){
+            console.log("Its in line with the role");
+          }
+          
+        }
+        if(d2 != "None"){
+          for (let i = 0; i < rows.length; i++) {
+            if( d2 == rows[i].Degree_Name){
+              console.log("Its in line with the role");
+            }
+            
+          }
+        }
+      });
+    }
   }else{
-    let sql = "SELECT cert FROM Certifications WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND Level_ID = 3 AND Reg_ID = "+"'" +tracker_id+ "'";
-    db.all(sql,[], (err, rows) => {
-      if (err) {
+    const sql = "SELECT Degree_Name FROM Job_Id WHERE Job_Id = SELECT Job_Id FROM Jobs WHERE Job_Name = "+String(job);
+    db.all(sql, [], (err, rows) => {
+      if(err){
         return console.log(err.message);
-      }else{
-        return rows;
       }
-      
+      degrees = cb(rows);
+      return;
     });
-
   }
 }
+
+var track;
+var reg_score_final;
+var cert_recs;
 
 app.get('/results', (req, res) => {
 
@@ -570,8 +597,8 @@ app.get('/results', (req, res) => {
   let AT = A[0];
   let AR = A[1];
   let overall = FinalResults(KT, ST, AT, KR, SR, AR);
-  let track = overall[0];
-  let reg_score_final = overall[1];
+  track = overall[0];
+  reg_score_final = overall[1];
   const sql = "SELECT Reg_ID, Reg_Domain FROM Score_Reg";
   db.all(sql,[],(err,rows) => {
     if(err){
@@ -581,23 +608,155 @@ app.get('/results', (req, res) => {
     for (let index = 0; index < track.length; index++) {
       for (let j = 0; j < rows.length; j++) {
         if (rows[j].Reg_ID == track[index]) {
-          console.log(track[index]);
-          console.log(rows[j].Reg_Domain);
+          //console.log(track[index]);
+          //console.log(rows[j].Reg_Domain);
           reg_name.push(String(rows[j].Reg_Domain));
         }
         
       }
       
     }
-    
+    //var b = Degree(degree1, degree2, cb);
+    //console.log(a);
+  know = 0;
+  skill = 0;
+  ability = 0;
+  degree1 = 0;
+  degree2 = 0;
+  cert1 = 0;
+  cert2 = 0;
+  team_select = 0;
 
-    res.render('results.ejs', {model:reg_name, model1:reg_score_final});
+
+    res.render('results.ejs', {model:reg_name, model1:reg_score_final, model2:ksa_score, model3:ksa_pointers});
   });
   //console.log("Reg names: -------------------------------------------------------------------\n",reg_name);
   
 
   
 });
+
+app.get('/certification_and_credentials_results', (req, res) => {
+const sql = "SELECT cert, Level_ID, Reg_ID FROM Certifications";
+db.all(sql, [], (err, rows) => {
+  if(err){
+    return console.log(err.message);
+  }
+  console.log("length of track ",track.length)
+  for (let i = 0; i < track.length; i++) {
+    for (let j = 0; j < rows.length; j++) {
+      if(reg_score_final[i] < 40 && (rows[j].Reg_ID == track[i]) && (rows[j].Level_ID == 1)){
+        console.log("Less than 40");
+        if(certs_output.includes(rows[j].cert) == false){
+          certs_output.push(rows[j].cert);
+        }
+      }
+      else if ((reg_score_final[i] > 40 && reg_score_final[i] < 60) && (rows[j].Reg_ID == track[i]) && (rows[j].Level_ID == 2)) {
+        console.log("Greater than 40 and less than 60");
+        if (certs_output.includes(rows[j].cert) == false) {
+          certs_output.push(rows[j].cert);
+        }
+      }
+      else if ((reg_score_final[i] > 61 && reg_score_final[i] < 89) && (rows[j].Reg_ID == track[i]) && (rows[j].Level_ID == 3)) {
+        console.log("Greater than 60 and less than 90");
+        if (certs_output.includes(rows[j].cert) == false) {
+          certs_output.push(rows[j].cert);
+        }
+      }
+      
+    }
+    
+  }
+  res.render("certification.ejs", {model:certs_output});
+});
+    
+  
+  
+});
+
+var cont_learning = [];
+app.get('/Cont_Learning', (req, res) => {
+  sum = 0;
+  for (let j = 0; j < ksa_score.length; j++) {
+    sum = sum + Number(ksa_score[j]);
+  }
+  ksa_avg = (sum/300)*100 ;
+  console.log("KSA Average ",ksa_avg);
+  const sql = "SELECT Learning, Level_ID FROM Cont_Learning WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'"+job+"'"+")";
+  db.all(sql, [], (err, rows) => {
+    if(err){
+      return console.log(err.message);
+    }
+    for (let i = 0; i < rows.length; i++) {
+      if(ksa_avg <= 40 && rows[i].Level_ID == 1){
+        cont_learning.push(rows[i].Learning);
+      }
+      else if ((ksa_avg > 40) && (ksa_avg <=89) && rows[i].Level_ID == 2) {
+        cont_learning.push(rows[i].Learning);
+      }
+      else if (ksa_avg >= 90 && rows[i].Level_ID == 3) {
+        cont_learning.push(rows[i].Learning);
+      }
+    }
+    res.render('cont_learning.ejs',{model:cont_learning});
+  });
+});
+
+var exp_learn = [];
+app.get('/experiential_learning', (req, res) => {
+  sum = 0;
+  for (let j = 0; j < ksa_score.length; j++) {
+    sum = sum + Number(ksa_score[j]);
+  }
+  ksa_avg = (sum/300)*100 ;
+  console.log("KSA Average ",ksa_avg);
+  const sql = "SELECT Experience, Level_ID FROM Exp_Learning WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'"+job+"'"+")";
+  db.all(sql, [], (err, rows) => {
+    if(err){
+      return console.log(err.message);
+    }
+    for (let i = 0; i < rows.length; i++) {
+      if(ksa_avg <= 40 && rows[i].Level_ID == 1){
+        exp_learn.push(rows[i].Experience);
+      }
+      else if ((ksa_avg > 40) && (ksa_avg <=60) && rows[i].Level_ID == 2) {
+        exp_learn.push(rows[i].Experience);
+      }
+      else if (ksa_avg >= 61 && ksa_avg <=89 && rows[i].Level_ID == 3) {
+        exp_learn.push(rows[i].Experience);
+      }
+    }
+    res.render('exp_learning.ejs',{model:exp_learn});
+  });
+});
+
+var training = [];
+app.get('/training', (req, res) => {
+  sum = 0;
+  for (let j = 0; j < ksa_score.length; j++) {
+    sum = sum + Number(ksa_score[j]);
+  }
+  ksa_avg = (sum/300)*100 ;
+  console.log("KSA Average ",ksa_avg);
+  const sql = "SELECT Topic, Level_ID FROM Training WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'"+job+"'"+")";
+  db.all(sql, [], (err, rows) => {
+    if(err){
+      return console.log(err.message);
+    }
+    for (let i = 0; i < rows.length; i++) {
+      if(ksa_avg <= 40 && rows[i].Level_ID == 1){
+        training.push(rows[i].Topic);
+      }
+      else if ((ksa_avg > 40) && (ksa_avg <=60) && rows[i].Level_ID == 2) {
+        training.push(rows[i].Topic);
+      }
+      else if (ksa_avg >= 61 && ksa_avg <=89 && rows[i].Level_ID == 3) {
+        training.push(rows[i].Topic);
+      }
+    }
+    res.render('training.ejs',{model:training});
+  });
+})
 
 //Team
 
