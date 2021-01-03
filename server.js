@@ -25,6 +25,7 @@ app.set('view engine', 'pug');
 const cons = require('consolidate');
 const { request } = require('http');
 const { createECDH } = require('crypto');
+const { Console } = require('console');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Database
@@ -202,6 +203,10 @@ app.get('/team_assessment', (req, res) => {
 app.post('/team_assessment', (req, res) => {
   team_assess = req.body.team_chosen;
   // Add redirect route
+})
+
+app.get('/team_results', (req, res) => {
+  
 })
 
 //End of team assess
@@ -399,7 +404,7 @@ skill_score = skill_score1.toPrecision(2);
 
 ksa_score = [know_score, skill_score, abi_score];
 
-db.run(`INSERT INTO Answers(Name, K_score, S_score, A_score, Date) VALUES(?, ?, ?, ?, datetime("now","localtime"))`, [name+" "+surname, know_score, skill_score, abi_score], function(err) {
+db.run("INSERT INTO Answers(Name, ID, K_score, S_score, A_score, Date) VALUES(?, (SELECT ID FROM Users WHERE Name = "+"'"+name+" "+surname+"'"+"), ?, ?, ?, datetime('now','localtime'))", [name+" "+surname, know_score, skill_score, abi_score], function(err) {
   if (err) {
     return console.log(err.message);
   }else{
@@ -534,7 +539,7 @@ function cb(rows){
 function Degree(d1, d2, cb){
   if((d1 || d2) !== "None"){
     if(d1 != "None"){
-      const sql = "SELECT Degree_Name FROM Job_Id WHERE Job_Id = SELECT Job_Id FROM Jobs WHERE Job_Name = "+String(job);
+      const sql = "SELECT Degree_Name FROM Job_Id WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+String(job)+")";
       db.all(sql, [], (err, rows) => {
         for (let index = 0; index < rows.length; index++) {
           if(d1 == rows[index].Degree_Name){
@@ -599,8 +604,9 @@ app.get('/results', (req, res) => {
   let overall = FinalResults(KT, ST, AT, KR, SR, AR);
   track = overall[0];
   reg_score_final = overall[1];
-  const sql = "SELECT Reg_ID, Reg_Domain FROM Score_Reg";
-  db.all(sql,[],(err,rows) => {
+  console.log("HERE1")
+  const sql2 = "SELECT Reg_ID, Reg_Domain FROM Score_Reg WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'"+job+"'"+")";
+  db.all(sql2,[],(err,rows) => {
     if(err){
       return console.log(err.message);
     }
@@ -616,6 +622,8 @@ app.get('/results', (req, res) => {
       }
       
     }
+
+
     //var b = Degree(degree1, degree2, cb);
     //console.log(a);
   know = 0;
@@ -630,9 +638,9 @@ app.get('/results', (req, res) => {
 
     res.render('results.ejs', {model:reg_name, model1:reg_score_final, model2:ksa_score, model3:ksa_pointers});
   });
-  //console.log("Reg names: -------------------------------------------------------------------\n",reg_name);
-  
 
+
+  //console.log("Reg names: -------------------------------------------------------------------\n",reg_name);
   
 });
 
@@ -754,6 +762,32 @@ app.get('/training', (req, res) => {
         training.push(rows[i].Topic);
       }
     }
+
+    console.log("I am here")
+      const sql = "SELECT Reg_ID, Reg_Domain FROM Score_Reg";
+      db.all(sql, [], (err, rows1) => {
+        if (err) {
+          return console.log(err.message);
+        } 
+        for (let i = 0; i < track.length; i++) {
+          for (let j = 0; j < rows1.length; j++) {
+            if(rows1[j].Reg_ID == track[i]){
+              var sql1 = "UPDATE Answers SET "+rows1[j].Reg_Domain+" = "+"'"+reg_score_final[i]+"'"+" WHERE ID = (SELECT ID FROM Users WHERE Name = "+"'"+(name)+" "+surname+"'"+")";  
+              db.run(sql1, [], (err) => {
+              if(err){
+                return console.log(err.message);
+            }
+            
+          });
+
+            }
+            
+          }
+          
+        }
+      }); 
+    
+    console.log('Here');
     res.render('training.ejs',{model:training});
   });
 })
@@ -765,10 +799,8 @@ app.get('/training', (req, res) => {
 //End of team
 
 
-//
 
 function Team_Average(score_array){}; 
-
 var server = app.listen(3000, function() {
     console.log("Server is up.")
 });
