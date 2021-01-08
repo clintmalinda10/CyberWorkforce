@@ -202,12 +202,22 @@ app.get('/team_assessment', (req, res) => {
 
 app.post('/team_assessment', (req, res) => {
   team_assess = req.body.team_chosen;
+
+  res.redirect('/team_results');
   // Add redirect route
 })
 
 app.get('/team_results', (req, res) => {
-  
-})
+  var sql = "SELECT Name FROM Users WHERE Team_Name = "+"'"+team_assess+"'";
+  db.all(sql,[],(err, rows) => {
+    if (err) {
+      return console.log(err.message);
+    }
+    
+    res.render('team_analysis.ejs', {model:team_assess, model1:rows});
+  });
+    
+});
 
 //End of team assess
 
@@ -532,11 +542,9 @@ function FinalResults(KT, ST, AT, KR, SR, AR){
 var certs_output = [];
 var degrees;
 
-function cb(rows){
-  certs_output.push[rows];
-}
 
-function Degree(d1, d2, cb){
+
+function Degree(d1, d2){
   if((d1 || d2) !== "None"){
     if(d1 != "None"){
       const sql = "SELECT Degree_Name FROM Job_Id WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+String(job)+")";
@@ -563,7 +571,7 @@ function Degree(d1, d2, cb){
       if(err){
         return console.log(err.message);
       }
-      degrees = cb(rows);
+      
       return;
     });
   }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Team analysis</title>
+    <script src="https://kit.fontawesome.com/884dceafcb.js" crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+
+    <div class="topnav">
+       <p class="progress">Team Analysis</p> 
+    </div>
+    <div class="head">
+        <h1 ><a id="header" href="/">CYBER SECURITY</a></h1>
+        <p id="enter">Welcome to the team analysis</p>
+        <script>
+            document.write(Date());
+        </script>
+    </div><br><br>
+ <p class="team"> <%= model %> </p>
+<table>
+    <tr>
+        <th>Name of member  </th>
+    </tr>    
+        <% for(let j = 0; j < model1.length; j++) { %>
+            <tr>
+                <td> <%=model1[j].Name%> </td>
+            </tr>
+            <% } %>
+    
+</table>
+    
+</body>
+</html>

@@ -273,3 +273,45 @@ a {
   font-family: 'Franklin Gothic Medium';
 
 }
+
+.body_text {
+  color: black;
+  font-size: medium;
+  font-family: Impact;
+}
+
+.team {
+  font: italic;
+  font-size: xx-large;
+  font-family: 'Times New Roman';
+  color: red;
+  text-decoration: underline;
+}
+
+
+.team_report {
+  list-style-type: decimal;
+  size: inherit;
+}
+
+.team_report .ind_results {
+  text-align: left;
+  font-family: Verdana;
+  font-size: small;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
