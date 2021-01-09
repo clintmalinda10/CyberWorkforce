@@ -22,17 +22,71 @@
         </script>
     </div><br><br>
  <p class="team"> <%= model %> </p>
+
+ <table>
+     <tr>
+         <th>Team Name</th>
+         <th>Knowledge Requirements</th>
+         <th>Skills Requirements </th>
+         <th>Abilities Requirements</th>
+     </tr>
+     <tr>
+         <td><%=model%></td>
+         <td id="kr"><%=model1[0].K_Req%></td>
+         <td id="sr"><%=model1[0].S_Req%></td>
+         <td id="ar"><%=model1[0].A_Req%></td>
+     </tr>
+     <tr>
+         <td></td>
+         <td id="tks"></td>
+         <td id="tss"></td>
+         <td id="tas"></td>
+     </tr>
+ </table><br>
+
+ <br>
+<div style="overflow-x:auto;">
 <table>
     <tr>
         <th>Name of member  </th>
+        <th>K Score (100)</th>
+        <th>S_Score (100)</th>
+        <th>A_Score (100)</th>
+        <th>CTS (100)</th>
+        <th>Cybersecurity (100)</th>
+        <th>Networks (100)</th>
+        <th>Presentation (100)</th>
+        <th>EA (100)</th>
+        <th>Technical Skills (100)</th>
     </tr>    
-        <% for(let j = 0; j < model1.length; j++) { %>
+        <% for(let j = 0; j < model2.length; j++) { %>
             <tr>
-                <td> <%=model1[j].Name%> </td>
+                <td> <%=model2[j].Name%> </td>
+                <td class="k"><%=model2[j].K_Score%></td>
+                <td id="s>"><%=model2[j].S_Score%></td>
+                <td id="a"><%=model2[j].A_Score%></td>
+                <td id="cts"><%=model2[j].Communication_and_Teaching_skills%></td>
+                <td id="cyber"><%=model2[j].Cybersecurity%></td>
+                <td id="networks"><%=model2[j].Networks%></td>
+                <td id="present"><%=model2[j].Presentation%></td>
+                <td id="ea"><%=model2[j].EA%></td>
+                <td id="ts"><%=model2[j].Technical_skills%></td>
             </tr>
+            <% %>
+
+            <script>
+                if (document.getElementById("kr").innerHTML > document.getElementsByClassName("k").innerHTML ) {
+                    document.getElementsByClassName("k").style.color = "red";
+                } else {
+                    document.getElementsByClassName("k").style.color = "green";
+                }
+            </script>
+            
             <% } %>
+            
     
 </table>
-    
+</div>
+
 </body>
 </html>

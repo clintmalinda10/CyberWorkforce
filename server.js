@@ -71,6 +71,10 @@ app.get('/', (req, res) => {
   cert1 = "";
   cert2 = "";
   team_select = [];
+  training = [];
+  exp_learn =[];
+  cont_learning = [];
+  certs_output = [];
   res.render("dash.ejs");
 });
 
@@ -208,16 +212,22 @@ app.post('/team_assessment', (req, res) => {
 })
 
 app.get('/team_results', (req, res) => {
-  var sql = "SELECT Name FROM Users WHERE Team_Name = "+"'"+team_assess+"'";
-  db.all(sql,[],(err, rows) => {
-    if (err) {
-      return console.log(err.message);
-    }
-    
-    res.render('team_analysis.ejs', {model:team_assess, model1:rows});
-  });
-    
-});
+    var sql2 = "SELECT * FROM Answers WHERE Team_Name = "+"'"+team_assess+"'";
+    console.log(sql2);
+    db.all(sql2, [], (err, rows1) => {
+      if (err) {
+        return console.log(err.message);
+      }
+      console.log(rows1);
+      var sql = "SELECT K_Req, S_Req, A_Req FROM Teams WHERE Team_Name = "+"'"+team_assess+"'";
+      db.all(sql,[], (err, rows) => {
+        if (err) {
+          return console.log(err.message);
+        }
+         res.render('team_analysis.ejs', {model:team_assess, model2:rows1, model1:rows});
+        });
+      });
+    });    
 
 //End of team assess
 
@@ -414,16 +424,28 @@ skill_score = skill_score1.toPrecision(2);
 
 ksa_score = [know_score, skill_score, abi_score];
 
-db.run("INSERT INTO Answers(Name, ID, K_score, S_score, A_score, Date) VALUES(?, (SELECT ID FROM Users WHERE Name = "+"'"+name+" "+surname+"'"+"), ?, ?, ?, datetime('now','localtime'))", [name+" "+surname, know_score, skill_score, abi_score], function(err) {
-  if (err) {
-    return console.log(err.message);
-  }else{
-    //console.log("Insert successful!");
-  }
+if (team_select != "None") {
+  
+  db.run("INSERT INTO Answers(Name, ID, Team_Name, K_score, S_score, A_score, Date) VALUES(?, (SELECT ID FROM Users WHERE Name = "+"'"+name+" "+surname+"'"+"), ?, ?, ?, ?, datetime('now','localtime'))", [name+" "+surname, team_select, know_score, skill_score, abi_score], function(err) {
+    if (err) {
+      return console.log(err.message);
+    }
+    
+    res.redirect('/results');
+  });
 
-});
+} else {
+  
+  db.run("INSERT INTO Answers(Name, ID, Team_Name, K_score, S_score, A_score, Date) VALUES(?, (SELECT ID FROM Users WHERE Name = "+"'"+name+" "+surname+"'"+"), ?, ?, ?, ?, datetime('now','localtime'))", [name+" "+surname, "None", know_score, skill_score, abi_score], function(err) {
+    if (err) {
+      return console.log(err.message);
+    }
+    res.redirect('/results');
+  });
 
-res.redirect('/results');
+}
+
+
 
 });
 
@@ -808,7 +830,25 @@ app.get('/training', (req, res) => {
 
 
 
-function Team_Average(score_array){}; 
+function Team_Average(Team){
+ var sql = "SELECT K_Score, S_Score, A_Score FROM Answers WHERE Team_Name = "+"'"+team_assess+"'";
+ db.all(sql,[], (err, rows) => {
+  if (err) {
+    return console.log(err.message);
+  }
+  var k = 0;
+  var s = 0;
+  var a = 0;
+  for (let i = 0; i < rows.length; i++) {
+    k = k + rows[i].K_Score;
+    s = s + rows[i].S_Score;
+    a = a + rows[i].A_Score;
+  }
+  var k_avg = k/k.length;
+  var s_avg = s/s.length;
+  var a_avg = a/a.length;
+ });
+}; 
 var server = app.listen(3000, function() {
     console.log("Server is up.")
 });
