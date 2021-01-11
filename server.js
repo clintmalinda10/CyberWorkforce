@@ -224,7 +224,47 @@ app.get('/team_results', (req, res) => {
         if (err) {
           return console.log(err.message);
         }
-         res.render('team_analysis.ejs', {model:team_assess, model2:rows1, model1:rows});
+        var sql4 = "SELECT Job FROM Users WHERE Name = "+"'"+rows1[0].Name+"'";
+        db.all(sql4, [], (err, rows2) => {
+          if (err) {
+            return console.log(err.message);
+          }
+          var k = [];
+          var s = [];
+          var a = [];
+          var com = [];
+          var cyber = [];
+          var net = [];
+          var present = [];
+          var ea = [];
+          var tech = [];
+          for (let i = 0; i < rows1.length; i++) {
+            k.push(rows1[i].K_Score);
+            s.push(rows1[i].S_Score);
+            a.push(rows1[i].A_Score);
+            com.push(rows1[i].Communication_and_Teaching_skills);
+            cyber.push(rows1[i].Cybersecurity);
+            net.push(rows1[i].Networks);
+            present.push(rows1[i].Presentation);
+            ea.push(rows1[i].EA);
+            tech.push(rows1[i].Technical_skills);
+          }
+          k = (getArraySum(k)/k.length).toPrecision(2);
+          s = (getArraySum(s)/s.length).toPrecision(2);
+          a = (getArraySum(a)/a.length).toPrecision(2);
+          com = getArraySum(com)/com.length;
+          cyber = getArraySum(cyber)/cyber.length;
+          net = getArraySum(net)/net.length;
+          present = getArraySum(present)/present.length;
+          ea = getArraySum(ea)/ea.length;
+          tech = getArraySum(tech)/tech.length;
+          reg_score_final = [com, cyber, net, present, ea, tech];
+          track = [1,2,3,4,5,6];
+          ksa_score = [k, s, a];
+          team_assess = rows1[0].Team_Name;
+          job = rows2[0].Job;
+          res.render('team_analysis.ejs', {model:team_assess, model2:rows1, model1:rows , model3:k, model4:s, model5:a});
+          });
         });
       });
     });    

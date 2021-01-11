@@ -15,8 +15,8 @@
        <p class="progress">Team Analysis</p> 
     </div>
     <div class="head">
-        <h1 ><a id="header" href="/">CYBER SECURITY</a></h1>
-        <p id="enter">Welcome to the team analysis</p>
+        <h1 class="head1"><a href="/">CYBER SECURITY</a></h1>
+        <p class="welcome">Welcome to the team analysis</p>
         <script>
             document.write(Date());
         </script>
@@ -24,24 +24,48 @@
  <p class="team"> <%= model %> </p>
 
  <table>
-     <tr>
+     <tr class="table_header">
          <th>Team Name</th>
          <th>Knowledge Requirements</th>
          <th>Skills Requirements </th>
          <th>Abilities Requirements</th>
      </tr>
+
+     
      <tr>
-         <td><%=model%></td>
+         <td class="metric"> <i class="fas fa-bullseye"></i> Goal</td>
          <td id="kr"><%=model1[0].K_Req%></td>
          <td id="sr"><%=model1[0].S_Req%></td>
          <td id="ar"><%=model1[0].A_Req%></td>
      </tr>
      <tr>
-         <td></td>
-         <td id="tks"></td>
-         <td id="tss"></td>
-         <td id="tas"></td>
+         <td class="metric"> <i class="fas fa-clock"></i> Current</td>
+         <td id="tks"><%=model3%></td>
+         <td id="tss"><%=model4%></td>
+         <td id="tas"><%=model5%></td>
      </tr>
+
+     <script>
+        //Knowledge
+        if (document.getElementById('tks').innerHTML >= document.getElementById('kr').innerHTML) {
+           document.getElementById('tks').style.backgroundColor = "chartreuse";             
+        }else{
+           document.getElementById('tks').style.backgroundColor = " #ff3333";
+        }
+        //Skills
+        if (document.getElementById('tss').innerHTML >= document.getElementById('sr').innerHTML) {
+           document.getElementById('tss').style.backgroundColor = "chartreuse";             
+        }else{
+           document.getElementById('tss').style.backgroundColor = " #ff3333";
+        }
+        //Abilities
+        if (document.getElementById('tas').innerHTML >= document.getElementById('ar').innerHTML) {
+           document.getElementById('tas').style.backgroundColor = "chartreuse";             
+        }else{
+           document.getElementById('tas').style.backgroundColor = " #ff3333";
+        }
+    </script>
+
  </table><br>
 
  <br>
@@ -52,12 +76,12 @@
         <th>K Score (100)</th>
         <th>S_Score (100)</th>
         <th>A_Score (100)</th>
-        <th>CTS (100)</th>
-        <th>Cybersecurity (100)</th>
-        <th>Networks (100)</th>
-        <th>Presentation (100)</th>
-        <th>EA (100)</th>
-        <th>Technical Skills (100)</th>
+        <th id="reg">CTS (100)</th>
+        <th id="reg">Cybersecurity (100)</th>
+        <th id="reg">Networks (100)</th>
+        <th id="reg">Presentation (100)</th>
+        <th id="reg">EA (100)</th>
+        <th id="reg">Technical Skills (100)</th>
     </tr>    
         <% for(let j = 0; j < model2.length; j++) { %>
             <tr>
@@ -87,6 +111,7 @@
     
 </table>
 </div>
-
+<br><br>
+<a href="/certification_and_credentials_results"><button class="button"><i class="fas fa-tools"></i> Recommendations</button></a>
 </body>
 </html>

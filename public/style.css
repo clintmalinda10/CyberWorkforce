@@ -233,7 +233,7 @@ a {
 }
 
 .head {
-  background-color: coral;
+  background-color: sandybrown;
   color: white;
   font-family: 'Times New Roman';
   text-align: center;
@@ -284,7 +284,7 @@ a {
   font: italic;
   font-size: xx-large;
   font-family: 'Times New Roman';
-  color: red;
+  color: white;
   text-decoration: underline;
 }
 
@@ -307,11 +307,28 @@ table {
 }
 
 td, th {
-  border: 1px solid #dddddd;
   text-align: center;
   padding: 8px;
+  border-bottom: 1px solid #ddd;
 }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
+#regs {
+  background-color: white;
+}
+
+td {
+  background-color: white;
+}
+
+td:hover {
+  background-color: goldenrod;
+}
+
+th:hover {
+  background-color: goldenrod;
+}
+
+.metric {
+  color: white;
+  background-color: black;
 }
