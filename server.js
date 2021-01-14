@@ -346,7 +346,7 @@ app.post('/edit_team', (req, res) => {
 
 app.get('/knowledge', (req, res) => {
 
-  const sql = "SELECT Question, Reg_ID FROM Questions WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND KSA = 'K' ORDER BY RANDOM() LIMIT 5";
+  const sql = "SELECT Question, Reg_ID, More_info FROM Questions WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND KSA = 'K' ORDER BY RANDOM() LIMIT 5";
   db.all(sql, [], (err, rows) => {
     if (err) {
       return console.error(err.message);
@@ -367,7 +367,7 @@ app.post('/knowledge', (req, res) => {
 
 app.get('/skills', (req, res) => {
 
-  const sql = "SELECT Question, Reg_ID FROM Questions WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND KSA = 'S' ORDER BY RANDOM() LIMIT 5";
+  const sql = "SELECT Question, Reg_ID, More_info FROM Questions WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND KSA = 'S' ORDER BY RANDOM() LIMIT 5";
   db.all(sql, [], (err, rows) => {
     if (err) {
       return console.error(err.message);
@@ -387,7 +387,7 @@ app.post('/skills', (req, res) => {
 
 app.get('/ability', (req, res) => {
 
-  const sql = "SELECT Question, Reg_ID FROM Questions WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND KSA = 'A' ORDER BY RANDOM() LIMIT 5";
+  const sql = "SELECT Question, Reg_ID, More_info FROM Questions WHERE Job_Id = (SELECT Job_Id FROM Jobs WHERE Job_Name = "+"'" +job+ "'" +" ) AND KSA = 'A' ORDER BY RANDOM() LIMIT 5";
   db.all(sql, [], (err, rows) => {
     if (err) {
       return console.error(err.message);

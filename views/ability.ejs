@@ -25,7 +25,7 @@
     </div><br><br>
 
 <form method="POST" action="/ability">
-    <p>1. <%= model[0].Question %> </p>
+    <p>1. <%= model[0].Question %> <a href="<%=model[0].More_info%>" target="_blank">click here for more info</a></p>
         <input class="slider1" id="ability1" type="range" name="ability1" min="0" max="10" value="0" />
         <p>Value: <span id="score1"></span></p>
         <script>
@@ -37,7 +37,7 @@
             }
         </script>
 
-    <p>2. <%= model[1].Question %> </p>
+    <p>2. <%= model[1].Question %> <a href="<%=model[1].More_info%>" target="_blank">click here for more info</a></p>
     <input class="slider2" id="ability2" type="range" name="ability2" min="0" max="10" value="0" />
         <p>Value: <span id="score2"></span></p>
         <script>
@@ -49,7 +49,7 @@
             }
         </script>
 
-    <p>3. <%= model[2].Question %> </p>
+    <p>3. <%= model[2].Question %> <a href="<%=model[2].More_info%>" target="_blank">click here for more info</a></p>
     <input class="slider" id="ability3" type="range" name="ability3" min="0" max="10" value="0" />
         <p>Value: <span id="score3"></span></p>
         <script>
@@ -61,7 +61,7 @@
             }
         </script>
 
-    <p>4. <%= model[3].Question %> </p>
+    <p>4. <%= model[3].Question %> <a href="<%=model[3].More_info%>" target="_blank">click here for more info</a></p>
     <input class="slider" id="ability4" type="range" name="ability4" min="0" max="10" value="0" />
         <p>Value: <span id="score4"></span></p>
         <script>
@@ -73,7 +73,7 @@
             }
         </script>
 
-    <p>5. <%= model[4].Question %> </p>
+    <p>5. <%= model[4].Question %> <a href="<%=model[4].More_info%>" target="_blank">click here for more info</a></p>
     <input class="slider" id="ability5" type="range" name="ability5" min="0" max="10" value="0" />
         <p>Value: <span id="score5"></span></p>
         <script>
